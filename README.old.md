@@ -63,7 +63,7 @@ following:
 Finally: rename public/index.html as firebase.html, and rename the backed-up
 index.html to public/index.html
 
-To finish installation, issue `npm install --save react-router react-redux redux-thunk react-redux-firebase`
+To finish installation, issue `npm install --save react-router react-router-dom redux react-redux redux-thunk firebase react-redux-firebase redux-firestore`
 
 Create an src/config directory, create an fb.js in it, then issue 
 `firebase apps:sdkconfig`, choose your app, then copy the configuration
