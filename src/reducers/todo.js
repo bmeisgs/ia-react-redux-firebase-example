@@ -4,8 +4,7 @@ const defaultState = {
     todos: [
         todoActions.todoParams('Example 1'),
         todoActions.todoParams('Example 2')
-    ],
-    screen: 'list'
+    ]
 };
 
 export default (state = defaultState, action) => {

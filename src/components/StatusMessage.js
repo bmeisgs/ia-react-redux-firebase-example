@@ -13,7 +13,9 @@ let removeTimer = null;
 
 const StatusMessage = () => {
     const dispatch = useDispatch();
-    const q = useSelector(state => state.messages.queue);
+    const q = useSelector((state) => {
+        return state.messages.queue;
+    });
     // useEffect(() => {
     //     return () => {
     //         console.log('removeEffect');

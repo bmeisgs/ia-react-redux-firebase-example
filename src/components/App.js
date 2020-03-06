@@ -12,8 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <nav>
-        <Link to="/list">List</Link> || <Link to="/edit/0">Add item</Link>
-        <br/>
+        <h2><Link to="/list">List</Link> || <Link to="/edit/0">Add item</Link></h2>
         <StatusMessage />
       </nav>
       <Switch>

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import firebase from 'firebase/app'
 import 'firebase/firestore' // <- needed if using firestore
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
-import { ReactReduxFirebaseProvider, firebaseReducer } from 'react-redux-firebase'
+import { ReactReduxFirebaseProvider, getFirebase } from 'react-redux-firebase'
 import { createFirestoreInstance, firestoreReducer } from 'redux-firestore'
 import fbConfig from './configs/fb';
 import todosReducer from './reducers/todo';
@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(
     rootReducer, 
-    applyMiddleware(thunk)
+    applyMiddleware(thunk.withExtraArgument(getFirebase))
 );
 
 const rrfProps = {

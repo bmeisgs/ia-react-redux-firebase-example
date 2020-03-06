@@ -7,7 +7,7 @@ const EditItem = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
-    const todo = useSelector(state => {
+    const todo = useSelector((state) => {
         return state.todo.todos.reduce((acc, item) => {
             return (item.id.toString() === id) ? {...item} : acc;
         }, {

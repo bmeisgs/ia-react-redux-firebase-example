@@ -1,12 +1,27 @@
 import * as messageActions from './messages';
 
 export const TODO_ADD = (stuff) => {
-    return (dispatch, getState) => {
-        dispatch({
-            type: 'TODO_ADD',
-            payload: stuff
-        });
-        dispatch( messageActions.PUSH_INFO('Added new Todo with id ' + stuff.id.toString()) );
+    return (dispatch, getState, fbInstance) => {
+        console.log(fbInstance);
+        const db = fbInstance().firestore();
+        console.log(db);
+        const sampledb = db.collection('sample');
+        console.log(sampledb);
+        sampledb.get().then((data)=> {
+            console.log(data);
+            dispatch({
+                type: 'TODO_ADD',
+                payload: stuff
+            });
+            dispatch( messageActions.PUSH_INFO('Added new Todo with id ' + stuff.id.toString()) );
+        }).catch((e) => {
+            console.error(e);
+            dispatch({
+                type: 'TODO_ADD',
+                payload: stuff
+            });
+            dispatch( messageActions.PUSH_INFO('Added new Todo with id ' + stuff.id.toString()) );
+        })
     };
 };
 
