@@ -13,16 +13,16 @@ import fbConfig from './configs/fb';
 import todosReducer from './reducers/todo';
 import messagesReducer from './reducers/messages';
 import thunk from 'redux-thunk';
+import * as messageActions from './actions/messages';
+import * as todoActions from './actions/todo';
 
 firebase.initializeApp(fbConfig);
 
-const rootReducer = combineReducers({
-    'todo': todosReducer,
-    'messages': messagesReducer
-});
-
 const store = createStore(
-    rootReducer, 
+    combineReducers({
+        'todo': todosReducer,
+        'messages': messagesReducer
+    }), 
     applyMiddleware(thunk.withExtraArgument(getFirebase))
 );
 

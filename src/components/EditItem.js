@@ -8,13 +8,14 @@ const EditItem = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const todo = useSelector((state) => {
-        return state.todo.todos.reduce((acc, item) => {
-            return (item.id.toString() === id) ? {...item} : acc;
-        }, {
-            id: 0,
-            title: '',
-            state: 'todo'}
-        );
+        if (id === '0' || typeof state.todo.todos[id] === 'undefined') {
+            return {
+                id: '0',
+                title: '',
+                state: 'todo'
+            };
+        }
+        return state.todo.todos[id];
     });
 
     const handleChange = (e) => {
@@ -23,7 +24,7 @@ const EditItem = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (todo.id === 0) {
+        if (todo.id === '0') {
             dispatch(todoActions.TODO_ADD(todoActions.todoParams(todo.title, todo.state)));
         } else {
             dispatch(todoActions.TODO_UPDATE(todo));

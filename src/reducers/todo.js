@@ -1,45 +1,49 @@
 import * as todoActions from '../actions/todo';
 
 const defaultState = {
-    todos: [
-        todoActions.todoParams('Example 1'),
-        todoActions.todoParams('Example 2')
-    ]
+    todos: {}
 };
 
 export default (state = defaultState, action) => {
+    let id;
+    let newState;
     switch (action.type) {
+        case 'TODO_LOAD':
+            newState = {};
+            action.payload.forEach(doc => {
+                newState[doc.id] = {...doc};
+            });
+            return {
+                ...state,
+                todos: newState
+            };
         case 'TODO_ADD':
+            id = action.payload.id;
             return { 
                 ...state,
-                todos: [...state.todos, action.payload]
+                todos: {...state.todos, [id]: action.payload}
             };
+
         case 'TODO_UPDATE':
+            id = action.payload.id;
             return {
                 ...state,
-                todos: state.todos.map((item) =>
-                    (item.id === action.payload.id) ? action.payload : item
-                )
+                todos: {
+                    ...state.todos,
+                    [id]: action.payload
+                }
             };
         case 'TODO_REMOVE':
-            return {
-                ...state,
-                todos: state.todos.filter((item) => 
-                    item.id !== action.id
-                )
-            };
+            id = action.id;
+            newState = {...state, todos: {...state.todos}};
+            delete newState.todos[id];
+            return newState;
         case 'TODO_DONE':
-            return {
-                ...state,
-                todos: state.todos.map((item) => { 
-                    const newItem = {...item};
-                    if (item.id === action.id) {
-                        newItem.state = 'done';
-                    }
-                    return newItem;
-                })
-            };
-            default:
+            id = action.id;
+            newState = {...state, todos: {...state.todos}};
+            newState.todos[id].state = 'done';
+            return newState;
+        default:
             return { ...state };
     }
 };

@@ -54,10 +54,10 @@ following:
   - Database
   - Hosting
   - Pubsub
-- Firestore: port to use: 8090
-- Database emulator: 8091
-- Hosting emaultor: 8092
-- Pubsub emulator: 8093
+- Firestore: port to use: 20090
+- Database emulator: 20091
+- Hosting emaultor: 20092
+- Pubsub emulator: 20093
 - Download emulators: yes
 
 Finally: rename public/index.html as firebase.html, and rename the backed-up
@@ -73,3 +73,13 @@ and `});` in the last line as
 };
 export default config;
 ```
+
+Finally, change the firestore defaults rule to allow writes to the database. Edit `firestore.rules` so that the line 
+`      allow read, write: if false;` is changed to `      allow read, write: if true;`.
+
+
+## Starting the local emulator
+
+By clicking the + sign by the terminal dropdown in VSCode, open a new terminal. Type `firebase emulators:start --only firestore`.
+This should start the local firestore emulator.
+

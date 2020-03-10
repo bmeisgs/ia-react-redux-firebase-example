@@ -25,16 +25,16 @@
   },
   "emulators": {
     "firestore": {
-      "port": "8090"
+      "port": "20090"
     },
     "database": {
-      "port": "8091"
+      "port": "20091"
     },
     "hosting": {
-      "port": "8092"
+      "port": "20092"
     },
     "pubsub": {
-      "port": "8093"
+      "port": "20093"
     }
   }
 }
