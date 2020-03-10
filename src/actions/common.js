@@ -1,3 +1,9 @@
+/**
+ * This follows the singleton pattern: if it is not yet initialized, it creates a new firestore connection.
+ * Once it's created, it's stored.
+ * Any other times (unless newConnection arg is true) it's called it always returns the pre-initialized firestore instance.
+ */
+
 let existingInstance = null;
 
 export const getMeADatabase = (firebaseInstance, newConnection = false) => {

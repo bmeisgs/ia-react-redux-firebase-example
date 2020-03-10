@@ -8,20 +8,47 @@ const collectionRef = (fbInstance) => {
     return commonActions.getMeADatabase(fbInstance).collection(TODO_COLLECTION_NAME);
 }
 
+/**
+ * Action creators that use firebase need to create a thunk function, 
+ * as they require the use of async operations, and thus, promises.
+ * Actually, action creators here are doing the following:
+ * 1. Manage firestore CRUD operation.
+ * 2. Dispatch actual action that updates the local store.
+ * 
+ * Caveats:
+ * - only single user operations are allowed as there is no sync from
+ *   the firestore collections. A read sync is done on startup in the
+ *   TODO_LOAD operation, and that's it.
+ * - id's are assigned here instead of letting firebase create them.
+ */
+
 export const TODO_LOAD = () => {
     return (dispatch, getState, fbInstance) => {
         collectionRef(fbInstance).get().then((data) => {
             const docs = [];
             data.forEach((docu) => {
-                docs.push(docu.data());
+                const d = docu.data();
+                // Filter out the "blank document" that was used to initialize the collection.
+                if (d.id !== 'id0') {
+                    docs.push(d);
+                    // This is so that when we create new TODOs after a sync, we start with unused IDs.
+                    const idNum = parseInt(d.id.substr(2));
+                    if (idNum > currId) {
+                        currId = idNum;
+                    }
+                }
             });
+            // Once all documents are loaded in, it dispatches the action to fill up the local store.
+            // It could be done with a series of TODO_ADD actions, but that would trigger a repaint
+            // for the list component every time a document is added.
             dispatch({
                 type: 'TODO_LOAD',
                 payload: docs
             });
             dispatch( messageActions.PUSH_INFO('The remote storage backend is loaded.') );
         }).catch((e) => {
-            collectionRef(fbInstance).add({ignore: true});
+            // This is a blank "document" used to initialize the collection if it's necessary.
+            collectionRef(fbInstance).add({id: 'id0', ignore: true});
             console.log(e);
             dispatch( messageActions.PUSH_WARNING('Initializing remote storage') );
         });
